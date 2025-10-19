@@ -10,4 +10,9 @@ return {
 	{ "slugbyte/lackluster.nvim", lazy = false },
 	{ "rose-pine/neovim", lazy = false },
 	{ "catppuccin/nvim", lazy = false },
+	{ "lunarvim/darkplus.nvim", lazy = false },
+	{ "olivercederborg/poimandres.nvim", lazy = false },
+	{ "sainnhe/edge", lazy = false },
+	{ "eldritch-theme/eldritch.nvim", lazy = false },
+	{ "datsfilipe/vesper.nvim", lazy = false },
 }

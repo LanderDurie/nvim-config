@@ -24,7 +24,6 @@ return {
 						max_item_count = 20,
 						entry_filter = function(entry, ctx)
 							local kind = entry:get_kind()
-							-- Filter out Constant kind (like M_2_PIf128)
 							if kind == 21 then
 								return false
 							end
@@ -47,8 +46,8 @@ return {
 				},
 				mapping = cmp.mapping.preset.insert({
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
-					["<C-j>"] = cmp.mapping.select_next_item(),
-					["<C-k>"] = cmp.mapping.select_prev_item(),
+					["<C-n>"] = cmp.mapping.select_next_item(),
+					["<C-p>"] = cmp.mapping.select_prev_item(),
 				}),
 				snippet = {
 					expand = function(args)
@@ -89,14 +88,40 @@ return {
 			-- LSP keymaps
 			local lsp_attach = function(client, bufnr)
 				local opts = { buffer = bufnr }
-				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-				vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-				vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-				vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-				vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, opts)
+				-- === Core navigation ===
+				vim.keymap.set("n", "H", vim.lsp.buf.hover, { desc = "Show documentation", buffer = bufnr })
+				vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, { desc = "Go to definition", buffer = bufnr })
+				vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, { desc = "List references", buffer = bufnr })
+				vim.keymap.set(
+					"n",
+					"<leader>gt",
+					vim.lsp.buf.type_definition,
+					{ desc = "Go to type definition", buffer = bufnr }
+				)
+				vim.keymap.set(
+					"n",
+					"<leader>gi",
+					vim.lsp.buf.implementation,
+					{ desc = "Go to implementation", buffer = bufnr }
+				)
+
+				-- === Refactor / edit ===
+				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol", buffer = bufnr })
+				vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "Format current buffer", buffer = bufnr })
+
+				-- === Highlight references ===
+				vim.keymap.set(
+					"n",
+					"<leader>hh",
+					vim.lsp.buf.document_highlight,
+					{ desc = "Highlight symbol references", buffer = bufnr }
+				)
+				vim.keymap.set(
+					"n",
+					"<leader>hc",
+					vim.lsp.buf.clear_references,
+					{ desc = "Clear symbol highlights", buffer = bufnr }
+				)
 			end
 
 			lsp_zero.extend_lspconfig({

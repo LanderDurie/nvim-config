@@ -22,25 +22,25 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
-	{ import = "config.plugins" },
-	{ import = "config.colors.external" },
-}, {
+local vim_inspect = require("vim.inspect")
+
+local config = require("config.config")
+local utils = require("config.utils.config_utils")
+
+local conf = utils.LoadPlugins(config)
+table.insert(conf, { import = "config.colors.external" })
+
+print(vim_inspect(conf))
+
+require("lazy").setup(conf, {
 	checker = { enabled = true },
 	rocks = { enabled = false },
 })
 
 -- Load centralized config
+local colorscheme = utils.LoadExternalColors(config)
 
---local specs = {}
-
---vim.list_extend(specs, utils.LoadPlugins(config))
-
-local config = require("config.config")
-local utils = require("config.utils.config_utils")
-local spec = utils.LoadExternalColors(config)
-
-if spec and config.colorscheme then
+if colorscheme and config.colorscheme then
 	vim.cmd.colorscheme(config.colorscheme)
 else
 	if not utils.LoadCustomColors(config) then

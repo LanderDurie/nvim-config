@@ -20,8 +20,6 @@ return {
 				end,
 			},
 		},
-		config = function()
-			require("custom.completion")
-		end,
+		config = function() end,
 	},
 }
